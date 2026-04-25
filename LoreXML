@@ -1,0 +1,43 @@
+import xml.etree.ElementTree as ET
+import random
+#  que es estamadre we?
+def indent(elem, level=0):
+    i = "\n" + level * "  "
+    if len(elem):
+        if not elem.text or not elem.text.strip():
+            elem.text = i + "  "
+        for child in elem:
+            indent(child, level + 1)
+        if not child.tail or not child.tail.strip():
+            child.tail = i
+    if level and (not elem.tail or not elem.tail.strip()):
+        elem.tail = i
+
+#  Datos base
+categorias_base = ["Electrónica", "Ropa", "Hogar", "Deportes"]
+subcategorias_base = ["Premium", "Económico", "Nuevo", "Oferta"]
+
+root = ET.Element("catalogos")
+
+#  Generar múltiples registros
+for i in range(1, 101):
+    categoria = ET.SubElement(root, "categoria")
+
+    ET.SubElement(categoria, "id").text = str(i)
+    ET.SubElement(categoria, "nombre").text = random.choice(categorias_base) + f" {i}"
+    ET.SubElement(categoria, "activa").text = random.choice(["true", "false"])
+
+    subcats = ET.SubElement(categoria, "subcategorias")
+
+    for _ in range(random.randint(2, 4)):
+        sub = ET.SubElement(subcats, "subcategoria")
+        sub.text = random.choice(subcategorias_base)
+
+# Aplicar indentación
+indent(root)
+
+#  Guardar XML bonito
+tree = ET.ElementTree(root)
+tree.write("catalogos.xml", encoding="utf-8", xml_declaration=True)
+
+print("XML generado con formato (saltos de línea e indentado)")
