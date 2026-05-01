@@ -1,7 +1,7 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
 import Tabla from './PaginasWeb/Tabla';
-
+import Tabla2 from './PaginasWeb/Tabla2';
 
 function App() {
   return (
@@ -9,6 +9,7 @@ function App() {
       <Routes>
 
         <Route path='/' element={<Tabla/>}/>
+        <Route path='/hola' element={<Tabla2/>}/>
 
 
 

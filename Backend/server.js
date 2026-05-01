@@ -31,6 +31,25 @@ app.get('/sus', (req, res)=>{
 
 });
 
+app.get('/sas', (req, res)=>{
+
+    const Consulta_SQL = "SELECT sku_id, id_usuario, nombre_ciudad, fabricante, consumo_energetico, precio_por_millon, objeto_premium, numero_purikya FROM hola"
+    
+    BaseDatos.query(Consulta_SQL, (err, result) => {
+        if(err){
+            return res.json(err);
+        }else{
+
+            return res.json(result);
+
+        }
+    });
+
+
+});
+
+
+
 
 
 app.listen(port, () => {

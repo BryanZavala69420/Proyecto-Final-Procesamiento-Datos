@@ -2,19 +2,17 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 
 import { Link } from "react-router-dom";
-import importante from "../imagenes/a.png";
 
-import image from "../imagenes/image.png";
-import './Tabla.css'
 
-function Tabla() {
+
+function Tabla2() {
     const [usuarios, setUsuarios] = useState([]);
     const [cargando, setCargando] = useState(true);
 
 
     useEffect(() => {
         axios
-            .get("http://localhost:8081/sus")
+            .get("http://localhost:8081/sas")
             .then((response) => {
                 setUsuarios(response.data);
                 setCargando(false);
@@ -28,15 +26,6 @@ function Tabla() {
     }, []);
 
 
-    const formatearFecha = (fechaISO) => {
-        const fecha = new Date(fechaISO);
-
-        return fecha.toLocaleDateString("es-MX", {
-            year: "numeric",
-            month: "2-digit",
-            day: "2-digit"
-        });
-    };
 
     if (cargando) return <p> Cargando usuarios... </p>;
 
@@ -44,11 +33,7 @@ function Tabla() {
         <div>
             <div className="Titulo">
                 <h1> Tabla donde se daran los datos del web scrapping </h1>
-                <img
-                    src={importante}
-                    alt="importante, este es el banner"
-                    height={150 }
-                />
+
             </div>
 
             <div className="Tabla">
@@ -56,11 +41,15 @@ function Tabla() {
                 <table className="Tabla_Usuarios">
                     <thead>
                         <tr>
-                            <th> Id_transaccion </th>
-                            <th> Id_Cliente </th>
-                            <th> Monto </th>
-                            <th> Fecha </th>
-                            <th> Id_Tienda </th>
+                            <th> sku_id </th>
+                            <th> id_usuario </th>
+                            <th> nombre_ciudad </th>
+                            <th> fabricante </th>
+                            <th> consumo_energetico </th>
+                            <th> precio_por_millon </th>
+                            <th> objeto premium</th>
+                            <th> numero_purikya</th>
+                       
                         </tr>
 
                     </thead>
@@ -77,12 +66,18 @@ function Tabla() {
                         ) : (
 
                             usuarios.map((mapear) => (
-                                <tr key={mapear.id_transaccion}>
-                                    <td>{mapear.id_transaccion}</td>
-                                    <td>{mapear.id_cliente}</td>
-                                    <td>${mapear.monto}</td>
-                                    <td>{formatearFecha(mapear.fecha)}</td>
-                                    <td>{mapear.id_tienda}</td>
+                                <tr key={mapear.id_usuario}>
+                                    <td>{mapear.sku_id}</td>
+                                    <td>{mapear.id_usuario}</td>
+                                    <td>{mapear.nombre_ciudad}</td>
+                                    <td>{(mapear.fabricante)}</td>
+                                    <td>{mapear.consumo_energetico}</td>
+                                    <td> {mapear.precio_por_millon}</td> 
+                                    <td> {mapear.objeto_premium}</td>
+                                    <td>{mapear.numero_purikya}</td>
+
+
+
                                 </tr>
                             ))
 
@@ -96,9 +91,7 @@ function Tabla() {
 
 
             </div>
-            <img src={image}
-                alt="banner"
-            />
+
 
 
 
@@ -112,4 +105,4 @@ function Tabla() {
 
 }
 
-export default Tabla;
+export default Tabla2;
