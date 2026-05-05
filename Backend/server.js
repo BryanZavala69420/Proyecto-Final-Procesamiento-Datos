@@ -1,57 +1,52 @@
-//dependencias para que pueda correr la madre esta
-const express = require('express');
-const mysql = require('mysql');
-const cors = require('cors');
-
+const express = require("express");
+const mysql = require("mysql");
+const cors = require("cors");
 const app = express();
 app.use(cors());
 
-//base de datos, conexion
-const BaseDatos = mysql.createConnection({
+// Conexión con reconexión automática
+function conectar() {
+  const BaseDatos = mysql.createConnection({
     host: "localhost",
-    user: "root",
-    password: '',
-    database: "ventas"
-});
-// puerto
-const port = 8081;
+    user: "ernesto",
+    password: "030224",
+    database: "ventas",
+  });
 
-app.get('/sus', (req, res)=>{
+  BaseDatos.connect((err) => {
+    if (err) {
+      console.error("Error conectando, reintentando en 2s...", err);
+      setTimeout(conectar, 2000);
+      return;
+    }
+    console.log("Conectado a MariaDB");
+  });
 
-    const Consulta_SQL = "SELECT  id_transaccion, id_cliente, monto, fecha, id_tienda FROM ventas_chingonas"
-    
-    BaseDatos.query(Consulta_SQL, (err, result) => {
-        if(err){
-            return res.json(err);
-        }else{
-            return res.json(result);
-        }
-    });
+  BaseDatos.on("error", (err) => {
+    console.error("Error de BD:", err);
+    if (err.fatal) conectar(); // reconecta si muere
+  });
 
+  return BaseDatos;
+}
 
-});
+let BaseDatos = conectar();
 
-app.get('/sas', (req, res)=>{
-
-    const Consulta_SQL = "SELECT sku_id, id_usuario, nombre_ciudad, fabricante, consumo_energetico, precio_por_millon, objeto_premium, numero_purikya FROM hola"
-    
-    BaseDatos.query(Consulta_SQL, (err, result) => {
-        if(err){
-            return res.json(err);
-        }else{
-
-            return res.json(result);
-
-        }
-    });
-
-
+app.get("/sus", (req, res) => {
+  BaseDatos.query(
+    "SELECT id_transaccion, id_cliente, monto, fecha, id_tienda FROM ventas_chingonas",
+    (err, result) => {
+      if (err) return res.status(500).json([]);
+      return res.json(result);
+    },
+  );
 });
 
-
-
-
-
-app.listen(port, () => {
-    console.log('conectandose en el puerto 8081, y en el puerto 3001');
+app.get("/sas", (req, res) => {
+  BaseDatos.query("SELECT * FROM ventas LIMIT 100", (err, result) => {
+    if (err) return res.status(500).json([]);
+    return res.json(result);
+  });
 });
+
+app.listen(8081, () => console.log("Servidor en puerto 8081"));

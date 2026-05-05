@@ -1,3 +1,12 @@
+-- phpMyAdmin SQL Dump
+-- version 5.2.1
+-- https://www.phpmyadmin.net/
+--
+-- Servidor: 127.0.0.1
+-- Tiempo de generación: 01-05-2026 a las 06:53:13
+-- Versión del servidor: 10.4.32-MariaDB
+-- Versión de PHP: 8.2.12
+
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
 SET time_zone = "+00:00";
@@ -7,6 +16,23 @@ SET time_zone = "+00:00";
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
 /*!40101 SET NAMES utf8mb4 */;
+
+--
+-- Base de datos: `ventas`
+--
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla
+--
+
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `ventas`
+--
 
 CREATE TABLE `ventas` (
   `id_transaccion` int(11) NOT NULL,
@@ -5918,14 +5944,21 @@ INSERT INTO `ventas` (`id_transaccion`, `id_clientes`, `monto`, `fecha`, `id_tie
 (5891, 97, 5147.53, NULL, 18),
 (5892, 56, 10396.6, NULL, NULL);
 
-CREATE TABLE `ventas_chingonas` (
+-- --------------------------------------------------------
+
+--
+--
+
   `id_transaccion` int(11) NOT NULL,
   `id_cliente` int(11) DEFAULT NULL,
   `monto` float DEFAULT NULL,
   `fecha` date DEFAULT NULL,
   `id_tienda` int(11) DEFAULT NULL
-);
-INSERT INTO `ventas_chingonas` (`id_transaccion`, `id_cliente`, `monto`, `fecha`, `id_tienda`) VALUES
+)
+
+--
+--
+
 (1, 27, NULL, '2013-11-08', NULL),
 (2, NULL, NULL, NULL, 20),
 (3, NULL, 7778.27, '2024-02-23', 9),
@@ -7347,7 +7380,6 @@ INSERT INTO `ventas_chingonas` (`id_transaccion`, `id_cliente`, `monto`, `fecha`
 (1419, 22, 10194.4, '2013-10-24', 9),
 (1420, 86, 7336.45, '2001-12-22', 10),
 (1421, 97, NULL, '2007-08-28', NULL);
-INSERT INTO `ventas_chingonas` (`id_transaccion`, `id_cliente`, `monto`, `fecha`, `id_tienda`) VALUES
 (1422, NULL, 10641.8, '1985-04-25', 11),
 (1423, 31, 510.3, '2019-04-16', 5),
 (1424, NULL, 1081.2, '2010-10-14', 17),
@@ -8736,7 +8768,6 @@ INSERT INTO `ventas_chingonas` (`id_transaccion`, `id_cliente`, `monto`, `fecha`
 (2807, 16, 10037.4, '2017-07-14', NULL),
 (2808, 14, 5563.09, '1999-11-18', 8),
 (2809, NULL, 2231.69, '2004-04-03', NULL);
-INSERT INTO `ventas_chingonas` (`id_transaccion`, `id_cliente`, `monto`, `fecha`, `id_tienda`) VALUES
 (2810, NULL, 10040.8, '2017-02-08', 1),
 (2811, 68, 7532.03, '1995-09-27', NULL),
 (2812, 40, NULL, '1986-01-29', 3),
@@ -10124,7 +10155,6 @@ INSERT INTO `ventas_chingonas` (`id_transaccion`, `id_cliente`, `monto`, `fecha`
 (4194, 45, 9168.31, '2001-05-30', 3),
 (4195, 23, 9904.71, '1993-11-04', 7),
 (4196, 61, 2278.02, '2002-03-13', 6);
-INSERT INTO `ventas_chingonas` (`id_transaccion`, `id_cliente`, `monto`, `fecha`, `id_tienda`) VALUES
 (4197, 29, 8743.26, '1998-09-19', 9),
 (4198, 91, 159.03, '1995-04-07', 18),
 (4199, 31, 9666.18, '2002-10-05', 3),
@@ -11518,7 +11548,6 @@ INSERT INTO `ventas_chingonas` (`id_transaccion`, `id_cliente`, `monto`, `fecha`
 (5587, NULL, 10335.8, '1988-11-21', 17),
 (5588, 40, 9007.02, '2003-05-29', 7),
 (5589, 44, 9956.25, '2008-06-27', 4);
-INSERT INTO `ventas_chingonas` (`id_transaccion`, `id_cliente`, `monto`, `fecha`, `id_tienda`) VALUES
 (5590, NULL, NULL, '1999-06-29', 10),
 (5591, 47, 4279.29, '2005-10-29', 4),
 (5592, 89, 9066.31, '2018-12-29', NULL),
@@ -11836,9 +11865,7 @@ ALTER TABLE `ventas`
   ADD PRIMARY KEY (`id_transaccion`);
 
 --
--- Indices de la tabla `ventas_chingonas`
 --
-ALTER TABLE `ventas_chingonas`
   ADD PRIMARY KEY (`id_transaccion`);
 COMMIT;
 
