@@ -9,8 +9,12 @@ from bs4 import BeautifulSoup
 from pymongo import MongoClient
 
 from config import (
-    MARIADB, MONGODB_URI, MONGODB_DB,
-    SCRAPING_URL, API_BASE_CURRENCY, API_FALLBACK,
+    API_BASE_CURRENCY,
+    API_FALLBACK,
+    MARIADB,
+    MONGODB_DB,
+    MONGODB_URI,
+    SCRAPING_URL,
 )
 
 
@@ -48,9 +52,9 @@ def extraer_mongodb() -> pd.DataFrame:
 
         registros = [
             {
-                "id_clientes":     doc.get("id_clientes"),
-                "edad":            doc.get("edad"),
-                "preferencias":    ", ".join(doc.get("preferencias") or []),
+                "id_clientes": doc.get("id_clientes"),
+                "edad": doc.get("edad"),
+                "preferencias": ", ".join(doc.get("preferencias") or []),
                 "geolocalizacion": doc.get("geolocalizacoon"),  # typo en la fuente
             }
             for doc in documentos
@@ -65,8 +69,8 @@ def extraer_mongodb() -> pd.DataFrame:
 
 def extraer_scraping(url: str = SCRAPING_URL) -> pd.DataFrame:
     """
-    Scraping de la tabla HTML en la app React (localhost:3000).
-    Columnas: Id_transaccion, Id_Cliente, Monto, Fecha, Id_Tienda
+    Consume directamente el API REST que alimenta la tabla React.
+    Evita el problema de renderizado JS de BeautifulSoup.
     """
     try:
         resp = requests.get(url, timeout=10)
@@ -78,28 +82,29 @@ def extraer_scraping(url: str = SCRAPING_URL) -> pd.DataFrame:
     except requests.exceptions.HTTPError as e:
         raise RuntimeError(f"❌ [Scraping] HTTP error: {e}") from e
 
-    soup = BeautifulSoup(resp.text, "html.parser")
-    tabla = soup.find("table")
-    if tabla is None:
-        raise ValueError(f"❌ [Scraping] No se encontró tabla HTML en {url}")
+    data = resp.json()
+    df = pd.DataFrame(data)
 
-    headers = [th.get_text(strip=True) for th in tabla.find_all("th")]
-    filas = [
-        [td.get_text(strip=True) for td in tr.find_all("td")]
-        for tr in tabla.find("tbody").find_all("tr")
-        if tr.find_all("td")
-    ]
-
-    df = pd.DataFrame(filas, columns=headers)
-    df["Monto"] = pd.to_numeric(
-        df["Monto"].str.replace("$", "", regex=False), errors="coerce"
+    # Renombrar columnas al formato esperado
+    df = df.rename(
+        columns={
+            "id_transaccion": "Id_transaccion",
+            "id_cliente": "id_clientes",
+            "monto": "Monto",
+            "fecha": "Fecha",
+            "id_tienda": "Id_Tienda",
+        }
     )
-    df["Id_transaccion"] = pd.to_numeric(df["Id_transaccion"], errors="coerce")
-    df["Id_Cliente"]     = pd.to_numeric(df["Id_Cliente"],     errors="coerce")
-    df["Id_Tienda"]      = pd.to_numeric(df["Id_Tienda"],      errors="coerce")
-    df["Fecha"]          = pd.to_datetime(df["Fecha"], dayfirst=True, errors="coerce")
 
-    print(f"✅ [Web Scraping] {len(df):,} registros extraídos de {url}")
+    df["Monto"] = pd.to_numeric(df["Monto"], errors="coerce")
+    df["Id_transaccion"] = pd.to_numeric(df["Id_transaccion"], errors="coerce")
+    df["id_cliente"] = pd.to_numeric(df["id_clientes"], errors="coerce")
+    df["Id_Tienda"] = pd.to_numeric(df["Id_Tienda"], errors="coerce")
+    df["Fecha"] = pd.to_datetime(df["Fecha"], errors="coerce")
+    data = resp.json()
+    df = pd.DataFrame(data)
+
+    print(f"✅ [Web Scraping→API] {len(df):,} registros extraídos de {url}")
     return df
 
 
