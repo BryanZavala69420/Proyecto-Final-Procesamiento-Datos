@@ -16,11 +16,8 @@ from config import (
 #funcion para extrar de Mysql/MariaDB
 def extraer_mariadb() -> pd.DataFrame:
     #conectar a MySQL/MariaDB a la base de datos ventas con la tabla ventas_chingonas
-    """
-    Conexión a MariaDB.
-    Base: ventas | Tabla: ventas_chingonas
-    Columnas: id_transaccion, id_cliente, monto, fecha, id_tienda
-    """
+    #Base: ventas | Tabla: ventas_chingonas
+    #Columnas: id_transaccion, id_cliente, monto, fecha, id_tienda
 
     try:
         conn = mysql.connector.connect(**MARIADB)
@@ -37,10 +34,8 @@ def extraer_mariadb() -> pd.DataFrame:
 #Funcion para extrer de MongoDB
 def extraer_mongodb() -> pd.DataFrame:
     #Conectar a MongoDB base de datos admin y coleccion perfiles_usuarios
-    """
-    Conexión a MongoDB (puerto 27017).
-    Base: admin | Colección: perfiles_usuarios
-    """
+    #Conexión a MongoDB (puerto 27017).
+    #Base: admin | Colección: perfiles_usuarios
     try:
         cliente = MongoClient(MONGODB_URI, serverSelectionTimeoutMS=5000)
         cliente.server_info()  # dispara error si no hay conexión
@@ -68,10 +63,9 @@ def extraer_mongodb() -> pd.DataFrame:
 
 #Funcion para extraer de la WEB
 def extraer_scraping(url: str = SCRAPING_URL) -> pd.DataFrame:
-    """
-    Scraping de la tabla HTML en la app React (localhost:3000).
-    Columnas: Id_transaccion, Id_Cliente, Monto, Fecha, Id_Tienda
-    """
+    
+    #Scraping de la tabla HTML en la app React (localhost:3000).
+    #Columnas: Id_transaccion, Id_Cliente, Monto, Fecha, Id_Tienda
     try:
         resp = requests.get(url, timeout=10)
         resp.raise_for_status()
@@ -111,10 +105,8 @@ def extraer_scraping(url: str = SCRAPING_URL) -> pd.DataFrame:
 
 #funcion para extraer el CSV
 def extraer_csv(ruta: str) -> pd.DataFrame:
-    """
-    Lee el CSV de clientes con datos sucios:
-    nulos ~10%, duplicados ~5%, fechas inconsistentes, países mal escritos.
-    """
+    #Lee el CSV de clientes con datos sucios:
+    #nulos 10%, duplicados 5%, fechas inconsistentes, países mal escritos.
     try:
         df = pd.read_csv(ruta)
     except FileNotFoundError:
@@ -141,7 +133,7 @@ def extraer_xlsx(ruta: str) -> pd.DataFrame:
 
 #funcion para extraer la API de las monedas y reglas del negocio
 def extraer_api(base: str = API_BASE_CURRENCY) -> dict:
-    """Consume exchangerate-api para tipos de cambio. Fallback si no hay internet."""
+   # """Consume exchangerate-api para tipos de cambio. Fallback si no hay internet."""
     try:
         resp = requests.get(
             f"https://api.exchangerate-api.com/v4/latest/{base}", timeout=8

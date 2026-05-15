@@ -9,7 +9,7 @@ from config import COLORES, BG, AX, GR, WH
 
 
 def _sty(ax, titulo: str) -> None:
-    """Aplica estilo oscuro uniforme a un subplot."""
+    #Aplica estilo oscuro uniforme a un subplot.
     ax.set_facecolor(AX)
     ax.set_title(titulo, color=WH, fontsize=10, pad=7)
     ax.tick_params(colors=WH)
@@ -28,16 +28,14 @@ def generar_dashboard(
     feats_pca: list,
     ruta_salida: str = "dashboard_etl.png",
 ) -> None:
-    """
-    Genera y guarda el dashboard con 12 visualizaciones.
-    Parámetros:
-        df_master   : DataFrame maestro enriquecido y segmentado
-        df_kpis     : DataFrame con KPIs regionales (XLSX)
-        pca_obj     : Objeto PCA entrenado (sklearn)
-        varianza    : Array de varianza explicada por componente
-        feats_pca   : Lista de features usadas en PCA
-        ruta_salida : Ruta del PNG de salida
-    """
+    #Genera y guarda el dashboard con 12 visualizaciones. Parámetros:
+        #df_master   : DataFrame maestro enriquecido y segmentado
+        #df_kpis     : DataFrame con KPIs regionales (XLSX)
+        #pca_obj     : Objeto PCA entrenado (sklearn)
+        #varianza    : Array de varianza explicada por componente
+        #feats_pca   : Lista de features usadas en PCA
+        #ruta_salida : Ruta del PNG de salida
+    
     _validar_columnas(df_master)
 
     fig = plt.figure(figsize=(20, 22), facecolor=BG)
@@ -261,7 +259,7 @@ def generar_dashboard(
 
 
 def _validar_columnas(df: pd.DataFrame) -> None:
-    """Valida que el DataFrame maestro tenga las columnas mínimas necesarias."""
+    #Valida que el DataFrame maestro tenga las columnas mínimas necesarias.
     requeridas = {"monto", "segmento_cliente", "cluster", "PC1", "PC2", "PC3"}
     faltantes = requeridas - set(df.columns)
     if faltantes:
@@ -269,4 +267,4 @@ def _validar_columnas(df: pd.DataFrame) -> None:
 
 
 # Importación diferida para evitar circularidad con config
-from config import KMEANS_N_CLUSTERS  # noqa: E402 (se usa en Sankey)
+from config import KMEANS_N_CLUSTERS  

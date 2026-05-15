@@ -15,10 +15,8 @@ def enriquecer(
     perfiles: pd.DataFrame,
     clientes: pd.DataFrame,
 ) -> pd.DataFrame:
-    """
-    JOIN 1: ventas (MariaDB) ← perfiles (MongoDB) por id_cliente
-    JOIN 2: resultado ← clientes (CSV) por id_cliente = Customer_ID
-    """
+    #JOIN 1: ventas (MariaDB) ← perfiles (MongoDB) por id_cliente
+    #JOIN 2: resultado ← clientes (CSV) por id_cliente = Customer_ID
     #condicional para ver si hay algo en la base de datos ventas
     if ventas.empty:
         raise ValueError("DataFrame de ventas vacío, no hay nada we.")
@@ -39,14 +37,12 @@ def enriquecer(
 
 # Segmentación de clientes
 def segmentar(df: pd.DataFrame) -> pd.DataFrame:
-    """
-    Crea segmento_cliente con np.where:
-      Premium Joven   : monto > 7000 y edad <= 35
-      Premium Senior  : monto > 7000 y edad >  35
-      Estándar Joven  : monto 3000-7000 y edad <= 35
-      Estándar Senior : monto 3000-7000 y edad >  35
-      Básico          : monto < 3000
-    """
+    #Crea segmento_cliente con np.where:
+      #Premium Joven   : monto > 7000 y edad <= 35
+      #Premium Senior  : monto > 7000 y edad >  35
+      #Estándar Joven  : monto 3000-7000 y edad <= 35
+      #Estándar Senior : monto 3000-7000 y edad >  35
+     # Básico          : monto < 3000
     if "monto" not in df.columns:
         raise KeyError("Error en la segmentación: Columna 'monto' no encontrada")
     if "edad" not in df.columns:
@@ -90,10 +86,10 @@ def aplicar_pca(
     n: int = PCA_N_COMPONENTES,
     features: list = PCA_FEATURES,
 ):
-    """
-    Estandariza con Z-score y aplica PCA sobre variables de comportamiento.
-    Retorna (df_con_PCs, objeto_pca, varianza_explicada, features_usados).
-    """
+    
+    #Estandariza con Z-score y aplica PCA sobre variables de comportamiento.
+    #Retorna (df_con_PCs, objeto_pca, varianza_explicada, features_usados).
+   
     feats = [c for c in features if c in df.columns]
     if not feats:
         raise ValueError("Erroe en el PCA: Ninguna feature válida encontrada en el DataFrame")
@@ -128,7 +124,7 @@ def aplicar_kmeans(
     n_clusters: int = KMEANS_N_CLUSTERS,
     cols_pc: list = None,
 ) -> pd.DataFrame:
-    """Aplica K-Means sobre las componentes principales PC1, PC2, PC3."""
+   # """Aplica K-Means sobre las componentes principales PC1, PC2, PC3."""
     if cols_pc is None:
         cols_pc = ["PC1", "PC2", "PC3"]
 

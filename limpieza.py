@@ -10,7 +10,7 @@ from config import MAPA_PAISES, COLS_NORMALIZAR
 
 # Reporte de calidad
 def reporte_calidad(df: pd.DataFrame, nombre: str) -> None:
-    """Imprime un resumen de nulos, duplicados y forma del DataFrame."""
+    #"""Imprime un resumen de nulos, duplicados y forma del DataFrame."""
     print(f"\n{'-' * 55}")
     print(f"  CALIDAD: {nombre}")
     print(
@@ -26,14 +26,12 @@ def reporte_calidad(df: pd.DataFrame, nombre: str) -> None:
 
 # Limpieza por fuente
 def limpiar_ventas(df: pd.DataFrame) -> pd.DataFrame:
-    """
-    MariaDB — ventas_chingonas:
-    - Elimina duplicados por id_transaccion
-    - Imputa monto nulo con mediana
-    - Convierte fecha a datetime64
-    - Elimina filas sin id_cliente (llave de join)
-    - Imputa id_tienda con moda
-    """
+    #MariaDB — ventas_chingonas:
+    #- Elimina duplicados por id_transaccion
+    #- Imputa monto nulo con mediana
+    #- Convierte fecha a datetime64
+    #- Elimina filas sin id_cliente (llave de join)
+    #- Imputa id_tienda con moda
     if df.empty:
         raise ValueError("Error de limpieza en MariaDB: DataFrame vacío")
 
@@ -53,11 +51,9 @@ def limpiar_ventas(df: pd.DataFrame) -> pd.DataFrame:
 
 
 def limpiar_perfiles(df: pd.DataFrame) -> pd.DataFrame:
-    """
-    MongoDB — perfiles:
-    - Normaliza edades fuera de rango (1-110) con mediana
-    - Rellena geolocalización nula con 'Desconocida'
-    """
+   # MongoDB — perfiles:
+   # Normaliza edades fuera de rango (1-110) con mediana
+   # Rellena geolocalización nula con 'Desconocida'
     if df.empty:
         raise ValueError("Error de limpieza en MongoDB: DataFrame vacío")
 
@@ -77,13 +73,11 @@ def limpiar_perfiles(df: pd.DataFrame) -> pd.DataFrame:
 
 
 def limpiar_clientes(df: pd.DataFrame) -> pd.DataFrame:
-    """
-    CSV — clientes sucios:
-    - Elimina duplicados por Customer_ID
-    - Normaliza nombres de países
-    - Convierte Timestamp DD/MM/YYYY a datetime64
-    - Imputa numéricos con mediana
-    """
+    #CSV — clientes sucios:
+    #- Elimina duplicados por Customer_ID
+    #- Normaliza nombres de países
+    #- Convierte Timestamp DD/MM/YYYY a datetime64
+    #- Imputa numéricos con mediana
     if df.empty:
         raise ValueError("Limpieza del dataFrame vacío")
 
@@ -107,7 +101,7 @@ def limpiar_clientes(df: pd.DataFrame) -> pd.DataFrame:
 
 # Normalización
 def normalizar(df: pd.DataFrame, cols: list = COLS_NORMALIZAR) -> pd.DataFrame:
-    """Aplica MinMaxScaler y agrega columnas _norm al DataFrame."""
+    #Aplica MinMaxScaler y agrega columnas _norm al DataFrame.
     cols_presentes = [c for c in cols if c in df.columns]
     cols_faltantes  = [c for c in cols if c not in df.columns]
 
