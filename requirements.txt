@@ -1,26 +1,24 @@
-# ============================================================
 # REQUIREMENTS — Pipeline ETL Análisis Global de Retail
 # Programación para el Procesamiento de Datos
-# ============================================================
 # Instalación: pip install -r requirements.txt
 
-# --- Bases de datos ---
+# Bases de datos 
 mysql-connector-python  # Conexión a MariaDB/MySQL
 pymongo                 # Conexión a MongoDB
 
-# --- Web Scraping ---
+# Web Scraping 
 beautifulsoup4          # Parseo de HTML
 requests                # Peticiones HTTP (scraping + API)
 
-# --- Archivos estructurados ---
+# Archivos estructurados 
 openpyxl                # Lectura de archivos .xlsx
 pyarrow                 # Exportación a formato .parquet
 
-# --- Ciencia de datos ---
+#Ciencia de datos 
 pandas==3.0.2           # Manipulación de DataFrames
 numpy==2.4.4            # Operaciones numéricas
 scikit-learn==1.8.0     # PCA, K-Means, StandardScaler, MinMaxScaler
 
-# --- Visualización ---
+# Visualización
 matplotlib==3.10.8      # Generación del dashboard
 seaborn==0.13.2         # Estilo de gráficas

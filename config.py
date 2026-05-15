@@ -1,7 +1,4 @@
-# ============================================================
-# CONFIG — Constantes globales del pipeline ETL
-# ============================================================
-
+# Imports y configuraciones globales
 import warnings
 import matplotlib
 import seaborn as sns
@@ -10,28 +7,28 @@ matplotlib.use("Agg")
 warnings.filterwarnings("ignore")
 sns.set_theme(style="darkgrid")
 
-# ── Conexiones ───────────────────────────────────────────────
+#Conexion a MySQL/MariaDB, ya saben.
 MARIADB = {
     "host": "localhost",
     "user": "root",
     "password": "",
     "database": "ventas",
 }
-
+# Conexion MongoDB
 MONGODB_URI = "mongodb://localhost:27017/"
 MONGODB_DB  = "admin"
-
+#URL del webscrapping
 SCRAPING_URL = "http://localhost:3000"
 
-# ── Rutas de archivos ─────────────────────────────────────────
+#Rutas de archivos 
 CSV_CLIENTES  = "datos_clientes_sucios.csv"
 XLSX_KPIS     = "metas_anuales.xlsx"
 
-# ── API ───────────────────────────────────────────────────────
+#API de las monedas al negocio
 API_BASE_CURRENCY = "USD"
 API_FALLBACK = {"USD": 1, "MXN": 17.2, "EUR": 0.92, "ARS": 900, "BRL": 4.97}
 
-# ── Dashboard ────────────────────────────────────────────────
+#  Dashboard
 COLORES = {
     "Premium Joven":   "#e74c3c",
     "Premium Senior":  "#c0392b",
@@ -44,10 +41,10 @@ AX = "#16213e"
 GR = "#0f3460"
 WH = "white"
 
-# ── Normalización ─────────────────────────────────────────────
+#Normalización
 COLS_NORMALIZAR = ["ingresos", "puntos_lealtad", "gastos_mensuales"]
 
-# ── PCA ───────────────────────────────────────────────────────
+#PCA
 PCA_N_COMPONENTES = 3
 PCA_FEATURES = [
     "monto", "edad", "ingresos", "puntos_lealtad",
@@ -55,10 +52,9 @@ PCA_FEATURES = [
     "ingresos_norm", "puntos_lealtad_norm", "gastos_mensuales_norm",
 ]
 
-# ── K-Means ───────────────────────────────────────────────────
+#K-Means 
 KMEANS_N_CLUSTERS = 4
-
-# ── Mapa de países (normalización CSV) ───────────────────────
+#Mapa de países (normalización en el CSV)
 MAPA_PAISES = {
     "us": "Estados Unidos", "usa": "Estados Unidos",
     "mx": "México", "mex": "México", "mexico": "México", "méxico": "México",
@@ -70,7 +66,7 @@ MAPA_PAISES = {
     "nicaragua": "Nicaragua",
     "brasil": "Brasil", "brazil": "Brasil",
     "chile": "Chile",
-    "peru": "Perú", "perú": "Perú",
+    "peru": "Perú", "perú": "Perú", 
     "rusia": "Rusia",
     "alemania": "Alemania",
     "canada": "Canadá", "canadá": "Canadá",

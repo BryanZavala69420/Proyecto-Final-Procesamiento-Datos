@@ -1,10 +1,9 @@
-# ============================================================
-# VISUALIZACIÓN — Dashboard de 12 gráficas
-# ============================================================
-
+# VISUALIZACIÓN Dashboard de 12 gráficas
+#Imports
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
+#variables necesarias para que funcione, esto se toma del config.py
 
 from config import COLORES, BG, AX, GR, WH
 
@@ -48,7 +47,7 @@ def generar_dashboard(
         fontsize=16, fontweight="bold", color=WH, y=0.99,
     )
 
-    # 1. Boxplot montos por segmento
+    #1- Boxplot montos por segmento
     ax1 = fig.add_subplot(4, 3, 1)
     data_bp = [
         df_master.loc[df_master["segmento_cliente"] == s, "monto"].dropna()
@@ -64,10 +63,10 @@ def generar_dashboard(
     ax1.set_xticklabels(
         [s.replace(" ", "\n") for s in COLORES], fontsize=7, color=WH
     )
-    _sty(ax1, "📦 Boxplot: Montos por Segmento")
+    _sty(ax1, "Boxplot: Montos por Segmento")
     ax1.set_ylabel("Monto USD")
 
-    # 2. Scatter PCA PC1 vs PC2
+    #2- Scatter PCA PC1 vs PC2
     ax2 = fig.add_subplot(4, 3, 2)
     m = df_master["PC1"].notna()
     sc = ax2.scatter(
@@ -79,7 +78,7 @@ def generar_dashboard(
     ax2.set_xlabel("PC1")
     ax2.set_ylabel("PC2")
 
-    # 3. Varianza PCA
+    # 3- Varianza PCA
     ax3 = fig.add_subplot(4, 3, 3)
     lpc = [f"PC{i + 1}" for i in range(len(varianza))]
     bars = ax3.bar(
@@ -96,10 +95,10 @@ def generar_dashboard(
             f"{v * 100:.1f}%", ha="center", color=WH, fontsize=9,
         )
     ax3.legend(facecolor=AX, labelcolor=WH)
-    _sty(ax3, "📊 PCA: Varianza Explicada")
+    _sty(ax3, " PCA: Varianza Explicada")
     ax3.set_ylabel("% Varianza")
 
-    # 4. Histograma edades
+    #4- Histograma edades
     ax4 = fig.add_subplot(4, 3, 4)
     ax4.hist(
         df_master["edad"].dropna(), bins=30,
@@ -109,7 +108,7 @@ def generar_dashboard(
     ax4.set_xlabel("Edad")
     ax4.set_ylabel("Frecuencia")
 
-    # 5. Ventas totales por segmento
+    #5- Ventas totales por segmento
     ax5 = fig.add_subplot(4, 3, 5)
     vs = df_master.groupby("segmento_cliente")["monto"].sum().sort_values()
     ax5.barh(
@@ -117,10 +116,10 @@ def generar_dashboard(
         color=[COLORES.get(s, "#888") for s in vs.index],
         alpha=0.85, edgecolor=WH,
     )
-    _sty(ax5, "💰 Ventas Totales por Segmento (M USD)")
+    _sty(ax5, " Ventas Totales por Segmento (M USD)")
     ax5.set_xlabel("Millones USD")
 
-    # 6. Heatmap correlaciones
+    # 6- Heatmap correlaciones
     ax6 = fig.add_subplot(4, 3, 6)
     cols_c = ["monto", "edad", "ingresos", "gastos_mensuales", "puntos_lealtad"]
     cols_c = [c for c in cols_c if c in df_master.columns]
@@ -139,9 +138,9 @@ def generar_dashboard(
                 color="black", fontsize=7, fontweight="bold",
             )
     ax6.set_facecolor(AX)
-    ax6.set_title("🔥 Heatmap Correlaciones", color=WH, fontsize=10, pad=7)
+    ax6.set_title(" Heatmap Correlaciones", color=WH, fontsize=10, pad=7)
 
-    # 7. Pie segmentos
+    # 7- Pie segmentos
     ax7 = fig.add_subplot(4, 3, 7)
     sc2 = df_master["segmento_cliente"].value_counts()
     wedges, texts, at = ax7.pie(
@@ -153,20 +152,20 @@ def generar_dashboard(
     for a in at:
         a.set_color(WH)
     ax7.set_facecolor(AX)
-    ax7.set_title("🎯 Distribución Segmentos", color=WH, fontsize=10, pad=7)
+    ax7.set_title("Distribución Segmentos", color=WH, fontsize=10, pad=7)
 
-    # 8. Evolución ventas por año
+    # 8- Evolución ventas por año
     ax8 = fig.add_subplot(4, 3, 8)
     tmp = df_master.dropna(subset=["fecha"]).copy()
     tmp["año"] = tmp["fecha"].dt.year
     va = tmp.groupby("año")["monto"].sum()
     ax8.plot(va.index, va.values / 1e6, "-o", color="#2ecc71", linewidth=2, markersize=4)
     ax8.fill_between(va.index, va.values / 1e6, alpha=0.2, color="#2ecc71")
-    _sty(ax8, "📈 Ventas por Año (M USD)")
+    _sty(ax8, "Ventas por Año (M USD)")
     ax8.set_xlabel("Año")
     ax8.set_ylabel("Millones USD")
 
-    # 9. Scatter PC1 vs PC3 por segmento
+    # 9- Scatter PC1 vs PC3 por segmento
     ax9 = fig.add_subplot(4, 3, 9)
     for seg, color in COLORES.items():
         m2 = (df_master["segmento_cliente"] == seg) & df_master["PC1"].notna()
@@ -175,11 +174,11 @@ def generar_dashboard(
             c=color, alpha=0.4, s=8, label=seg,
         )
     ax9.legend(fontsize=6, facecolor=AX, labelcolor=WH, markerscale=2)
-    _sty(ax9, "🔵 PCA: PC1 vs PC3 por Segmento")
+    _sty(ax9, " PCA: PC1 vs PC3 por Segmento")
     ax9.set_xlabel("PC1")
     ax9.set_ylabel("PC3")
 
-    # 10. KPIs por región (XLSX)
+    # 10- KPIs por región (XLSX)
     ax10 = fig.add_subplot(4, 3, 10)
     if not df_kpis.empty and "Ventas_Anuales_USD" in df_kpis.columns:
         top = df_kpis.nlargest(10, "Ventas_Anuales_USD")
@@ -194,10 +193,10 @@ def generar_dashboard(
         )
     else:
         ax10.text(0.5, 0.5, "Sin datos KPI", ha="center", va="center", color=WH)
-    _sty(ax10, "🌍 Top 10 Regiones — KPIs XLSX")
+    _sty(ax10, "Top 10 Regiones — KPIs XLSX")
     ax10.set_ylabel("K USD")
 
-    # 11. Sankey simplificado: Segmentos → Clusters
+    # 11- Sankey simplificado: Segmentos - Clusters
     ax11 = fig.add_subplot(4, 3, 11)
     ax11.set_facecolor(AX)
     segs = list(COLORES.keys())
@@ -231,9 +230,9 @@ def generar_dashboard(
     ax11.set_xlim(-0.35, 1.35)
     ax11.set_ylim(0, 1)
     ax11.axis("off")
-    ax11.set_title("🌊 Sankey: Segmentos → Clusters", color=WH, fontsize=10, pad=7)
+    ax11.set_title("Sankey: Segmentos → Clusters", color=WH, fontsize=10, pad=7)
 
-    # 12. PCA Loadings
+    # 12- PCA Loadings
     ax12 = fig.add_subplot(4, 3, 12)
     load = pd.DataFrame(
         pca_obj.components_.T,
@@ -253,12 +252,12 @@ def generar_dashboard(
                 color="black", fontsize=6,
             )
     ax12.set_facecolor(AX)
-    ax12.set_title("⚙️ PCA Loadings", color=WH, fontsize=10, pad=7)
+    ax12.set_title("PCA Loadings", color=WH, fontsize=10, pad=7)
 
     plt.tight_layout(rect=[0, 0, 1, 0.97])
     plt.savefig(ruta_salida, dpi=130, bbox_inches="tight", facecolor=BG)
     plt.close()
-    print(f"✅ Dashboard guardado → {ruta_salida}")
+    print(f"Dashboard guardado, POR FIN AAAAAAAAAH: {ruta_salida}")
 
 
 def _validar_columnas(df: pd.DataFrame) -> None:
@@ -266,7 +265,7 @@ def _validar_columnas(df: pd.DataFrame) -> None:
     requeridas = {"monto", "segmento_cliente", "cluster", "PC1", "PC2", "PC3"}
     faltantes = requeridas - set(df.columns)
     if faltantes:
-        raise KeyError(f"❌ [Dashboard] Columnas faltantes en df_master: {faltantes}")
+        raise KeyError(f"Error en el DASHBOARD Columnas faltantes en df_master: {faltantes}")
 
 
 # Importación diferida para evitar circularidad con config
