@@ -35,13 +35,13 @@ def extraer_mariadb() -> pd.DataFrame:
 def extraer_mongodb() -> pd.DataFrame:
     """
     Conexión a MongoDB (puerto 27017).
-    Base: ventas | Colección: perfiles
+    Base: admin | Colección: perfiles_usuarios
     """
     try:
         cliente = MongoClient(MONGODB_URI, serverSelectionTimeoutMS=5000)
         cliente.server_info()  # dispara error si no hay conexión
         db = cliente[MONGODB_DB]
-        col = db["perfiles"]
+        col = db["perfiles_usuarios"]
 
         documentos = list(col.find({}, {"_id": 0}))
         cliente.close()

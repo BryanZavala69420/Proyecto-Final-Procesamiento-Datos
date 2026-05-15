@@ -13,13 +13,13 @@ sns.set_theme(style="darkgrid")
 # ── Conexiones ───────────────────────────────────────────────
 MARIADB = {
     "host": "localhost",
-    "user": "ernesto",
-    "password": "030224",
+    "user": "root",
+    "password": "",
     "database": "ventas",
 }
 
 MONGODB_URI = "mongodb://localhost:27017/"
-MONGODB_DB  = "ventas"
+MONGODB_DB  = "admin"
 
 SCRAPING_URL = "http://localhost:3000"
 
